@@ -1,7 +1,9 @@
 # sonic_emacs
 My simple Emacs 30 Configuration - still tweaking and learning
 It was mainly made with AI because I hate wasting time with configs.
+
 It works really well if you only use your computer to take notes, write org->LaTeX, make flashcards, and you can use emacs with this config on some android terminal emulator but that would just be overkill. I think the cross-platform issue is the main reason not to use it, followed by emacs verbosity. 
+
 RIP "It was a good experiment"
 
 ## Why?
