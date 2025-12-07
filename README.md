@@ -9,7 +9,7 @@ Emacs distributions and starter packs sometimes feel verbose, Emacs 30 already h
 
 
 ## Packages and dependencies:
-Dependency: texlive
+Dependency: texlive, anki-connect (anki Add-on code 2055492159)
 Packages: org, org-roam, org-babel, anki-editor, Modus Vivendi theme, which-key.
 
 ## Usage:
@@ -22,6 +22,40 @@ Packages: org, org-roam, org-babel, anki-editor, Modus Vivendi theme, which-key.
 - Math Inline: `$E=mc^2$`
 - Heading: `* chapter 1`
 
+### Org Personal Knowledge System
+- `M-x` (command search) -> type `dailies` -> choose `org-roam-dailies-capture-today` (emacs creates a file dated today)
+- Connecting thoughts like a Wiki: Let's say I am writing a journal and talk about Physiology and I want "Physiology" to be a permanent note: Highlight it -> Press `C-c n i` (create node insert) -> it turns into a link `[[id:xyz][Physiology]]`
+- `C-c n f` (node find): search org-roam and jump to a file
+- `C-c n i` (node insert): turn the text you are typing right now into a link to another note
+- `TAB` expands headings (show/hide text)
 
+### Flashcards:
+
+Anki cards are just headings with a tag:
+
+```
+* Physiology Deck                                        :deck:
+:PROPERTIES:
+:ANKI_DECK: Physiology
+:END:
+
+** Question...                                   :vocab:
+answer...
+```
+
+Using clozes:
+
+`M-x org-insert-property-drawer` -> Use standard Anki syntax `{{c1::answer}}`
+Example:
+```
+** The Powerhouse of the Cell
+:PROPERTIES:
+:ANKI_NOTE_TYPE: Cloze
+:END:
+The {{c1::mitochondria}} is the powerhouse of the cell.
+```
+Sending to Anki:
+
+To send to Anki: Press `M-x anki-editor-push-tree`
 
 <img width="877" height="900" alt="Screenshot From 2025-12-06 20-51-41" src="https://github.com/user-attachments/assets/bf5490f0-cb32-4f31-bfc6-da52ba89d987" />
