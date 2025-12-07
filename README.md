@@ -13,6 +13,11 @@ Dependency: texlive, anki-connect (anki Add-on code 2055492159)
 Packages: org, org-roam, org-babel, anki-editor, Modus Vivendi theme, which-key.
 
 ## Usage:
+
+### Avoiding shortcuts:
+
+`which-key` and `fido-vertical-mode` allow you to press certain important bindings like `C-c`, `C-x`, `M-x` (Alt + x) and wait for half a second to show all available commands. Also I keep the toolbar and all that activated because the GUI eases entry.
+
 ### Org to LaTeX:
 - `C-c C-e` Opens export dispatcher menu -> [l] export to LaTeX -> press `o` (as pdf and open) or press `p` (as PDF only)
 - Math Block:
