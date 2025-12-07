@@ -25,9 +25,10 @@
   (yas-global-mode 1))
 
 ;; --- 2. VISUALS & DASHBOARD ---
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; uncomment the following three if you want a cleaner but less intuitive look
+;; (menu-bar-mode -1) 
+;; (tool-bar-mode -1)
+;; (scroll-bar-mode -1)
 (load-theme 'modus-vivendi t)
 
 (use-package dashboard
