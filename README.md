@@ -101,19 +101,26 @@ Then press `C-c C-v t` to generate the file
 - Just like the org to LaTeX use, to **Weave** (exporting file to document) you should run the export dispatcher `C-c C-e` press `l` then `p` to export to PDF
 Example code:
 ```
-* Analysis of Coagulation Factors
-We can use Python to calculate the ratio between TP and TTPa for our patient.
+* K&R Literate Programming Guide Test
 
-#+begin_src python :results output
-tp_value = 12.5
-ttpa_value = 34.2
-ratio = ttpa_value / tp_value
-print(f"The calculated ratio is: {ratio:.2f}")
+Test code - A Hello World! in C 
+
+#+begin_src C :exports both
+  #include <stdio.h>
+
+  int main (void) {
+  printf ("Hello World!\n");
+  }
 #+end_src
 
 #+RESULTS:
-: The calculated ratio is: 2.74
+: Hello World!
+
+This code block ran without any issues and outputed "Hello World!".
 ```
+The exported pdf output:
+
+<img width="948" height="841" alt="Screenshot From 2025-12-19 07-51-16" src="https://github.com/user-attachments/assets/31cc84cd-894a-4053-a57b-919fb32c98e2" />
 
 # Other recommendations
 
