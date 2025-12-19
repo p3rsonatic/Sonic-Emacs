@@ -42,7 +42,7 @@ To use it:
 - `M-x` (command search) -> type `dailies` -> choose `org-roam-dailies-capture-today` (emacs creates a file dated today)
 - Connecting thoughts like a Wiki: Let's say I am writing a journal and talk about Physiology and I want "Physiology" to be a permanent note: Highlight it -> Press `C-c n i` (create node insert) -> it turns into a link `[[id:xyz][Physiology]]`
 - `C-c n f` (node find): search org-roam and jump to a file
-- `C-c n i` (node insert): turn the text you are typing right now into a link to another note
+- `C-c n i` (node insert): you can link and insert an existing node to the text you are writing or you can create another note and link it by typing the new node's name 
 - (for those command above you can just `M-x` and type `node` and find the commands like node find, node insert
 - `TAB` expands headings (show/hide text)
 
