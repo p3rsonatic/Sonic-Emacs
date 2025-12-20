@@ -16,12 +16,14 @@ Emacs distributions and starter packs sometimes feel verbose, Emacs 30 already h
 
 ## Packages and dependencies:
 Dependency: texlive, anki-connect (anki Add-on code 2055492159)
+
 Packages: org, org-roam, org-babel, anki-editor, Modus Vivendi theme, which-key, eglot, corfu, tree-sitter (note that some packages already come with Emacs 30)
 
 To use it:
 - in `(setq dashboard-startup-banner (expand-file-name "~/tardis.png"))` remember to put a tardis.png in your home folder
 - also remember in `(org-roam-directory (file-truename "~/Documents/org-notes"))` to set the folder for your org-roam-notes
 - and run `org-id-update-id-locations` when first using
+- For LSPs to work remember to install them. the list of LSPs is here: https://github.com/joaotavora/eglot?tab=readme-ov-file#connecting-to-a-server
 
 # Usage:
 
