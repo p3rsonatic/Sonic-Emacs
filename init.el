@@ -1,37 +1,39 @@
-;;; init.el --- The "TARDIS" Workflow Config
+;;; init.el --- The "TARDIS" Workflow Config ;;;
 
-;; --- PACKAGE SETUP ---
+;; ==========================================
+;; 1. PACKAGE SYSTEM & REPOS
+;; ==========================================
+
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa"  . "https://elpa.gnu.org/packages/")
                          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 (package-initialize)
 
+;; Bootstrap 'use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-;; --- 1. SMOOTH SAILING (Helpers) ---
-(use-package which-key
-  :init (which-key-mode)
-  :config (setq which-key-idle-delay 0.5))
+;; ==========================================
+;; 2. INTERFACE & VISUALS
+;; ==========================================
 
-(fido-vertical-mode 1) ;; Better search menus
+;; Core Emacs UI behavior
+(fido-vertical-mode 1)      ;; Better search menus for M-x and files
+(global-visual-line-mode t) ;; Soft-wrap lines instead of cutting them off
+(setq display-line-numbers-type 'relative) ;; Relative line numbering for faster jumping
+(global-display-line-numbers-mode 1)
 
-;; YASNIPPET (The "Missing Piece" for LaTeX/Anki)
-;; Allows you to type "eq" + TAB to get an equation block
-(use-package yasnippet
+;; Theme: TARDIS Blue / Deuteranopia friendly
+(use-package ef-themes
+  :ensure t
   :config
-  (yas-global-mode 1))
+  (load-theme 'ef-deuteranopia-dark t))
 
-;; --- 2. VISUALS & DASHBOARD ---
-;; (menu-bar-mode -1)
-;; (tool-bar-mode -1)
-;; (scroll-bar-mode -1)
-(load-theme 'modus-vivendi t)
-
+;; Startup Dashboard
 (use-package dashboard
   :config
   (dashboard-setup-startup-hook)
@@ -41,73 +43,124 @@
   (setq dashboard-items '((recents  . 5)
                           (projects . 5))))
 
-;; --- 3. ORG MODE (The Engine) ---
-(use-package org
-  :config
-  ;; Make headings look nice (bullets instead of asterisks)
-  (use-package org-bullets
-    :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-  
-  ;; LaTeX & Math Setup
-  (require 'ox-latex)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-  (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
-  (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
-  
-  ;; Code Blocks
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t) (python . t))))
+;; Help and discovery
+(use-package which-key
+  :init (which-key-mode)
+  :config (setq which-key-idle-delay 0.5))
 
-;; --- 4. ORG ROAM (The Brain) ---
-(use-package org-roam
-  :custom
-  (org-roam-directory (file-truename "~/Documents/org-notes"))
-  (org-roam-dailies-directory "daily/") ;; Folder for journals
-  :config
-  (org-roam-db-autosync-mode))
+;; ==========================================
+;; 3. COMPLETION STACK (The HUD)
+;; ==========================================
 
-;; --- 5. ANKI (The Memory) ---
-(use-package anki-editor)
-
-;; --- 6. COMPLETION & LSP (The HUD) ---
-
+;; Orderless: Allows "fuzzy" matching (e.g., "func my" matches "my_func")
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
+;; Corfu: The popup UI for auto-completion
 (use-package corfu
-  ;; Corfu is in GNU ELPA
-  :init
-  (global-corfu-mode)
+  :ensure t
   :custom
-  (corfu-auto t)
-  (corfu-cycle t)
-  (corfu-quit-at-boundary 'separator))
-
-;; Cape: Provides extra completion backends (required for better Eglot/Org integration)
-(use-package cape
+  (corfu-auto t)                 ;; Enable auto-completion
+  (corfu-auto-delay 0.1)         ;; 0.1 seconds delay (as requested)
+  (corfu-auto-prefix 2)          ;; 2 characters to trigger
+  (corfu-cycle t)                ;; Enable cycling through candidates
   :init
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev))
+  (global-corfu-mode))
 
+;; Eglot: The built-in LSP client
 (use-package eglot
-  :hook ((python-mode . eglot-ensure)
-         (c-mode . eglot-ensure))
+  :ensure t
+  :hook
+  ;; Ensures eglot starts in any programming mode if a server is found
+  (prog-mode . eglot-ensure))
+
+;; Cape: Extends completion backends
+(use-package cape
+  :ensure t
+  :init
+  ;; Global fallbacks (dabbrev, files, keywords)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
   :config
-  (add-to-list 'eglot-server-programs '(python-mode . ("basedpyright"))))
+  ;; Merge LSP results with dabbrev/keywords in one list when Eglot is active
+  (add-hook 'eglot-managed-mode-hook
+            (lambda ()
+              (setq-local completion-at-point-functions
+                          (list (cape-capf-super
+                                 #'eglot-completion-at-point
+                                 #'cape-dabbrev
+                                 #'cape-keyword))))))
 
-;; --- 7. LITERATE PROGRAMMING (Babel & Tangling) ---
-(with-eval-after-load 'org
-  ;; Easier block insertion: Type "<s" followed by TAB
-  (require 'org-tempo) 
+;; Emacs core completion settings
+(use-package emacs
+  :custom
+  (tab-always-indent 'complete)) ;; Tab first indents, then completes
+
+;; ==========================================
+;; 4. WRITING TOOLS (Snippets & Anki)
+;; ==========================================
+
+(use-package yasnippet
+  :config
+  (yas-global-mode 1))
+
+(use-package anki-editor)
+
+;; ==========================================
+;; 5. ORG MODE & LITERATE PROGRAMMING
+;; ==========================================
+
+(use-package org
+  :config
+  ;; Visual Bullets
+  (use-package org-bullets
+    :config (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
   
-  (setq org-confirm-babel-evaluate nil) ;; Don't ask for permission to run code
-  (setq org-src-fontify-natively t)      ;; Syntax highlighting in blocks
-  (setq org-src-tab-acts-natively t))    ;; Use language-specific TAB behavior
+  ;; LaTeX & Math Rendering
+  (require 'ox-latex)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+  (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
+  (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
+  
+  ;; Babel: Language Support
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t) (python . t))))
 
-;;; init.el ends here
+;; Literate Programming & Source Block Behavior
+(with-eval-after-load 'org
+  (require 'org-tempo) ;; Typing "<s" + TAB inserts code blocks
+  (setq org-confirm-babel-evaluate nil) ;; No prompts to run code
+  (setq org-src-fontify-natively t)      ;; Syntax highlighting in blocks
+  (setq org-src-tab-acts-natively t))   ;; Lang-specific TAB behavior
+
+;; IMPORTANT: Literacy Programming LSP Support
+;; This forces Eglot to activate when you use C-c ' to edit a source block
+(add-hook 'org-src-mode-hook #'eglot-ensure) 
+
+(setq org-src-preserve-indentation t  ;; Keeps code formatting clean
+      org-src-tab-acts-natively t     ;; Allows Tab to work like the real mode
+      org-edit-src-content-indentation 0)
+
+;; ==========================================
+;; 6. ORG ROAM (The Brain)
+;; ==========================================
+
+(use-package org-roam
+  :custom
+  (org-roam-directory (file-truename "~/Documents/org-notes"))
+  (org-roam-dailies-directory "daily/")
+  :config
+  (org-roam-db-autosync-mode))
+
+;; ==========================================
+;; 7. SYSTEM GENERATED SETTINGS
+;; ==========================================
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -116,17 +169,12 @@
  '(org-babel-load-languages
    '((emacs-lisp . t) (python . t) (C . t) (latex . t) (haskell . t)))
  '(package-selected-packages nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
- 
- ;; Line numbering and soft wrap
- 
-(global-visual-line-mode t) ;;soft-wrap
 
-(setq display-line-numbers-type 'relative) ;; relative line numbering 
-(global-display-line-numbers-mode 1)
- 
+;;; init.el ends here
