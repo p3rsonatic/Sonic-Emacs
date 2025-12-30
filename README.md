@@ -77,7 +77,27 @@ Sending to Anki:
 
 To send to Anki: Press `M-x anki-editor-push-tree`
 
+## LaTeX export and writing
 
+I enjoy writing in LaTeX, even some casual text, I also like to remove margins to save page space and I add some packages like multicolumns to save more space and use the book class for their abundance of header types like \page \chapter.
+
+Add these to the beginning of the document:
+
+#+TITLE: Document Title
+#+AUTHOR: Author Name
+#+DATE: 2026
+#+LATEX_CLASS: custom-book
+
+If you want to add native LaTeX you can for example do \newpage, but you can also do something like:
+
+#+BEGIN_EXPORT latex
+\begin{multicols}{2}
+#+END_EXPORT
+
+If you want to add an image, best to use \linewidth or something like 1in or 2in, also add a little description, so the best option is:
+
+\includegraphics[width=\linewidth]{anatomy_1.png} \\
+\textit{Kidney, external and internal features}
 
 ## Literate Programming:
 
