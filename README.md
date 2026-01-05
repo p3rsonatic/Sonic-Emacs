@@ -29,7 +29,7 @@ To use it:
 
 ## Avoiding shortcuts:
 
-`which-key` and `fido-vertical-mode` allow you to press certain important bindings like `C-c`, `C-x`, `M-x` (Alt + x) and wait for half a second to show all available commands. Also I keep the toolbar and all that activated because the GUI eases entry.
+`which-key` and `vertico` allow you to press certain important bindings like `C-c`, `C-x`, `M-x` (Alt + x) and wait for half a second to show all available commands. Also I keep the toolbar and all that activated because the GUI eases entry.
 
 ## Org to LaTeX:
 - `C-c C-e` Opens export dispatcher menu -> [l] export to LaTeX -> press `o` (as pdf and open) or press `p` (as PDF only)
@@ -83,21 +83,27 @@ I enjoy writing in LaTeX, even some casual text, I also like to remove margins t
 
 Add these to the beginning of the document:
 
+```
 #+TITLE: Document Title
 #+AUTHOR: Author Name
 #+DATE: 2026
 #+LATEX_CLASS: custom-book
+```
 
 If you want to add native LaTeX you can for example do \newpage, but you can also do something like:
 
+```
 #+BEGIN_EXPORT latex
 \begin{multicols}{2}
 #+END_EXPORT
+```
 
 If you want to add an image, best to use \linewidth or something like 1in or 2in, also add a little description, so the best option is:
 
+```
 \includegraphics[width=\linewidth]{anatomy_1.png} \\
 \textit{Kidney, external and internal features}
+```
 
 ## Literate Programming:
 
@@ -109,21 +115,24 @@ In an .org file you can add:
 ```
 #+begin_src 
 #+end_src
-
 ```
+
 after src you can add the language to be used.
 - To execute the code you run `C-c C-c` inside the code block
 - To edit in a native buffer (to have LSP support for example) run `C-c '` then run `C-c '` again to save it
 - To **Tangle** (the process of extracting code blocks into a standalone source file) add: `:tangle filename.py` to the header of the block:
+
 ```
 #+begin_src python :tangle my_script.py
 print("Hello from Org!")
 #+end_src
 ```
+
 Then press `C-c C-v t` to generate the file
 
 - Just like the org to LaTeX use, to **Weave** (exporting file to document) you should run the export dispatcher `C-c C-e` press `l` then `p` to export to PDF
 Example code:
+
 ```
 * K&R Literate Programming Guide Test
 
@@ -142,13 +151,18 @@ Test code - A Hello World! in C
 
 This code block ran without any issues and outputed "Hello World!".
 ```
+
 The exported pdf output:
 <img width="948" height="841" alt="Screenshot From 2025-12-19 07-53-59" src="https://github.com/user-attachments/assets/6f33789d-a468-41ec-80f1-ddf323094a63" />
 
 # Other recommendations
 
-While highly marketed and quite new, I recommend following the PARA file structure, Project, Area, Resource, Archive. Project being short term projects, Area being things you constantly work on (like university or job), Resource things that you will be using (like books), Archive being stuff you probably won't touch again, but need to keep saved.
-I believe org-roam can follow a similar structure, everything descending down 4 nodes each one for P A R A, it gets a falsely hierarchical structure which is easy to read, but can if needed mesh with other nodes in other "branches". What needs to be understood is this, while 2d representations are powerful and are more precise, their complexity and unreadability increases exponentially, that is why we still have 1d representations like tree file systems and prose text instead of concept maps, or even natural 1d languages instead of 2d ones like https://s.ai/nlws/ (Unker Non-Linear Writing System).
+- Use PARA mode structure: PARA stands for Project (a thing you work for a "short" amount of time), Area (a thing you constantly work with), Resource (something that you may use and change, like a book or manual), Archive (old files you probably will not edit). You can create folders and organize your org files in PARA folders, it will not change org-roam's web, since it auto detects all the files and backlinks. While web view is great, PARA allows for hierarchical structure alongside web view.
+- 1d systems are humanly readable, 2d systems can represent better: some engineered languages like Unker Non-Linear Writing System (https://s.ai/nlws/) are 2d, and words and phrases branch off increasing the number of routes to read exponentially, just like a concept map, while human prose writing is 1d from left to right, it is much simpler to follow.
+- Create a TODO node: By creating a TODO node you can link any TODOs in org-roam nodes to the TODO node, this avoids mixing org-agenda with org-roam, this is similar to how Logseq deals with TODOs.
+- If packages are not installing: run M-x package-refresh-contents
+- 
+
 
 # Screenshot:
 
