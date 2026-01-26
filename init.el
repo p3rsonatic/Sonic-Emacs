@@ -158,6 +158,8 @@
 \\usepackage{fontspec} % Required for XeLaTeX font selection
 \\usepackage{graphicx}
 \\usepackage{color}
+\\usepackage{ragged2e} % will remove white space between words to fill page line (full justification)
+\\RaggedRight 
 \\usepackage[a4paper, total={8in, 10in}]{geometry}
 \\usepackage{lmodern} % necessary for small font
 \\usepackage{fix-cm} % necessary for small font
