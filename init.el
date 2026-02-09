@@ -165,7 +165,6 @@
 \\usepackage{fix-cm} % necessary for small font
 \\usepackage{enumitem} % removes whitespaces between lists and others
 \\usepackage{parskip} %removes whitespaces between lines
-\\usepackage{blindtext} % allows clearing double pages (I think)
 [DEFAULT-PACKAGES]
 [PACKAGES]
 [EXTRA]
