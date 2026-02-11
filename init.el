@@ -145,9 +145,14 @@
 
 (require 'ox-latex)
 (setq org-latex-compiler "lualatex")
+(setq org-latex-pdf-process
+      '("latexmk -f -pdflua -interaction=nonstopmode -output-directory=%o %f"))
 
 ;; Adjust Preview Scale
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+;;Respect hierarchies
+(setq org-export-headline-levels 5)
 
 ;; Define the Custom Class
 (add-to-list 'org-latex-classes
