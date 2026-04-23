@@ -1,6 +1,3 @@
-;;SONIC EMACS
-
-;; RESPOSITORIES
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("elpa"  . "https://elpa.gnu.org/packages/")
@@ -115,7 +112,11 @@
   ;; Babel: Language Support
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (python . t) (C . t) (latex . t) (haskell . t))))
+   '((emacs-lisp . t) (python . t) (C . t) (latex . t) (haskell . t) (dot . t) (lisp . t))))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t))) ; this line activates dot
 
 ;; Literate Programming & Source Block Behavior
 (with-eval-after-load 'org
@@ -137,6 +138,7 @@
 ;; #+AUTHOR: PBS
 ;; #+DATE: 2026
 ;; #+LATEX_CLASS: custom-book
+
 ;;
 ;; If you want to add native LaTeX you can for example do \newpage, but you can also do something like:
 ;;#+BEGIN_EXPORT latex
@@ -163,11 +165,13 @@
 \\usepackage{fontspec} % Required for XeLaTeX font selection
 \\usepackage{graphicx}
 \\usepackage{color}
-\\usepackage{ragged2e} % will remove white space between words to fill page line (full justification)
-\\RaggedRight 
+\\usepackage{hyperref}
+\\usepackage{svg}
 \\usepackage[a4paper, total={8in, 10in}]{geometry}
 \\usepackage{lmodern} % necessary for small font
 \\usepackage{fix-cm} % necessary for small font
+\\usepackage{ragged2e} % will remove white space between words to fill page line (full justification)
+\\RaggedRight 
 \\usepackage{enumitem} % removes whitespaces between lists and others
 \\usepackage{parskip} %removes whitespaces between lines
 [DEFAULT-PACKAGES]
