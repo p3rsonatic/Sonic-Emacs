@@ -112,7 +112,7 @@
   ;; Babel: Language Support
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((emacs-lisp . t) (python . t) (C . t) (latex . t) (haskell . t) (dot . t) (lisp . t))))
+   '((emacs-lisp . t) (python . t) (C . t) (latex . t) (haskell . t) (dot . t) (lisp . t) (scheme . t) )))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
